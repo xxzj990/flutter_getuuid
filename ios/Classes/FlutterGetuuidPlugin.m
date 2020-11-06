@@ -41,7 +41,14 @@
         uuidString = uuid.UUIDString;
         uuidString = [uuidString stringByReplacingOccurrencesOfString:@"-" withString:@""];
         uuidString = [uuidString lowercaseString];
-        [SAMKeychain setPassword:uuidString forService:@"com.smart.read.app" account:@"uuid"];
+
+        NSError *error = nil;
+        SAMKeychainQuery *query = [[SAMKeychainQuery alloc] init];
+        query.service = @"com.smart.read.app";
+        query.account = @"uuid";
+        query.password = uuidString;
+        query.synchronizationMode = SAMKeychainQuerySynchronizationModeNo;
+        [query save:&error];
     }
 //    NSLog(@"uuidString = %@" , uuidString);
     return uuidString;
